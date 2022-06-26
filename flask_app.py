@@ -50,6 +50,7 @@ def upload_file():
         # resp = jsonify({'message' : 'No file part in the request'})
         resp = jsonify({'message' : 'No file uploaded in the request :/, go back and upload some.'})
         resp.status_code = 400
+        resp.content_type = "application/json"
         # return resp
         return make_response(resp, resp.status_code)
 
@@ -101,6 +102,7 @@ def upload_file():
         errors['message'] = 'File(s) successfully uploaded, but some errors occurred.'
         resp = jsonify(errors)
         resp.status_code = 500
+        resp.content_type = "application/json"
         # return resp
         return make_response(resp, resp.status_code)
 
@@ -108,6 +110,7 @@ def upload_file():
         # Type (print(type(resp))): flask.wrappers.Response
         resp = jsonify({'message' : 'Files successfully uploaded'})
         resp.status_code = 201
+        resp.content_type = "application/json"
 
         ocr_text_result = ocr_app_get_text(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
@@ -130,6 +133,7 @@ def upload_file():
     else:
         resp = jsonify(errors) 
         resp.status_code = 500
+        resp.content_type = "application/json"
         # return resp
         return make_response(resp, resp.status_code)
  
