@@ -242,6 +242,9 @@ def upload_file(files):
             # la fecha y hora en la que se hizo la consulta
             filename = filename + "_" + dt_string + "." + ext
 
+            dir = app.config['UPLOAD_FOLDER']
+            print(os.path.exists(dir))
+
             photo_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             file.save(r"" + photo_path)
 
