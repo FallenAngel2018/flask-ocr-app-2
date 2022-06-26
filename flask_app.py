@@ -40,28 +40,29 @@ def allowed_file(filename):
 
 # region Html pages
 
-@app.route('/', methods=['GET'])
+@app.route('/')
+# @app.route('/', methods=['GET'])
 def index():
     return render_template("index.html", title="Index")
     # return render_template("index.html", name = name)
 
-@app.route('/index2', methods=['GET'])
+@app.route('/index2')
 def index2():
     return render_template("index2.html", title="Index 2")
 
-@app.route('/index3', methods=['GET'])
+@app.route('/index3')
 def index3():
     return render_template("index3.html", title="Index 3")
 
-@app.route('/base_html', methods=['GET'])
+@app.route('/base_html')
 def base_html(title=None):
     return render_template("base.html", title = title)
 
-@app.route('/result', methods=['GET'])
+@app.route('/result')
 def html_result(result=None):
     return render_template("result.html", result = result)
 
-@app.route('/result2', methods=['GET'])
+@app.route('/result2')
 def html_result2(result=None):
     return render_template("result2.html", result = result)
 
