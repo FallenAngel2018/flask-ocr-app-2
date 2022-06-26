@@ -23,7 +23,8 @@ app = Flask(__name__,
 # app.secret_key = "caircocoders-ednalan"
 
 
-UPLOAD_FOLDER = r'static/uploads/' # Original
+# UPLOAD_FOLDER = r'static/uploads/' # Original, funciona en Windows
+UPLOAD_FOLDER = r'./static/uploads/' # Tal vez funcione en Linux
 # OCR_RESULTS_UPLOAD = 'static/ocr_results/' # Funciona en Windows
 OCR_RESULTS_UPLOAD = r'./static/ocr_results/'
 
