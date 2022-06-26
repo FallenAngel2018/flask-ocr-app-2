@@ -48,11 +48,14 @@ def upload_file():
     # check if the post request has the file part
     if 'files[]' not in request.files and 'photo' not in request.files:
         # resp = jsonify({'message' : 'No file part in the request'})
-        resp = jsonify({'message' : 'No file uploaded in the request :/, go back and upload some.'})
+        # resp = jsonify({'message' : 'No file uploaded in the request :/, go back and upload some.'})
+        errors['message'] = 'No file uploaded in the request :/, go back and upload some.'
+        resp = jsonify(errors)
         resp.status_code = 400
         resp.content_type = "application/json"
         # return resp
-        return make_response(resp, resp.status_code)
+        # return make_response(resp, resp.status_code)
+        return render_template("result.html", result = errors['message'])
 
 
     # Obtiene del campo 'files[]' en el request hecho por el usuario los archivos que contenga
@@ -104,7 +107,9 @@ def upload_file():
         resp.status_code = 500
         resp.content_type = "application/json"
         # return resp
-        return make_response(resp, resp.status_code)
+        # return make_response(resp, resp.status_code)
+        return render_template("result.html", result = errors['message'])
+
 
     if success:
         # Type (print(type(resp))): flask.wrappers.Response
@@ -118,24 +123,25 @@ def upload_file():
         # Si el texto extraído no está vacío...
         if ocr_text_result != '':
 
+            ocr_text_result = ocr_text_result.replace("\n\n", " ").replace("\u201c", '\"').replace("\u201d", '"').replace("\\", "")
+
             # if upload_success:
             # replace is only for making json esthetic, when returned, left the \n\n and else
             resp = jsonify({
                 'message' : 'Files successfully uploaded',
-                'ocr_extracted_text': ocr_text_result.replace("\n\n", " ")
-                    .replace("\u201c", '\"')
-                    .replace("\u201d", '"')
-                    .replace("\\", "")
+                'ocr_extracted_text': ocr_text_result
             })
 
-        return resp
-        # return make_response(resp, resp.status_code)
+        # return resp
+        # return make_response(resp, ocr_text_result)
+        return render_template("result.html", result = ocr_text_result)
     else:
         resp = jsonify(errors) 
         resp.status_code = 500
         resp.content_type = "application/json"
         # return resp
-        return make_response(resp, resp.status_code)
+        # return make_response(resp, resp.status_code)
+        return render_template("result.html", result = errors['message'])
  
 
 if __name__ == '__main__':
