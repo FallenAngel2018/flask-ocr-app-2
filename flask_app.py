@@ -109,8 +109,8 @@ def upload_file():
     if success:
         # Type (print(type(resp))): flask.wrappers.Response
         resp = jsonify({'message' : 'Files successfully uploaded'})
-        resp.status_code = 201
-        resp.content_type = "application/json"
+        # resp.status_code = 201
+        # resp.content_type = "application/json"
 
         ocr_text_result = ocr_app_get_text(os.path.join(app.config['UPLOAD_FOLDER'], filename))
 
@@ -128,8 +128,8 @@ def upload_file():
                     .replace("\\", "")
             })
 
-        # return resp
-        return make_response(resp, resp.status_code)
+        return resp
+        # return make_response(resp, resp.status_code)
     else:
         resp = jsonify(errors) 
         resp.status_code = 500
