@@ -2,9 +2,10 @@
 
 {% block main %}
 
-    {% if result is None or result == '' %}
+    {% if result == None or result == '' %}
         <h2>No results returned</h2>
     {% else %}
+        <h1>Lectura obtenida</h1>
         <h2>{{ result }}</h2>
     {% endif %}
 

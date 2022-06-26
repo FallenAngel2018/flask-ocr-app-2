@@ -76,10 +76,17 @@ def upload_file_test():
     
     print('files:', files)
 
-    upload_file(files)
+    message, result, status_code = upload_file(files)
 
-    return
-    # return render_template("result.html", result = "Ok")
+    # pprint(vars(result))
+    # print('result.response["ocr_extracted_text"]:', result.response["ocr_extracted_text"])
+    # print('result.response[0]:', result.response[0])
+    # print('result.response[0][1]:', result.response[0][0])
+    # print('result.response[0].decode("utf-8"):', result.response[0].decode("utf-8"))
+    # print(type(result.response[0]))
+
+
+    return render_template("result2.html", result = result)
 
 
 @app.route('/upload', methods=['POST'])
@@ -87,7 +94,15 @@ def upload_file():
 
     # Obtiene del campo 'files[]' en el request hecho por el usuario los archivos que contenga
     files = request.files.getlist('files[]')
-    upload_file(files)
+    message, result, status_code = upload_file(files)
+
+    print('result:', result)
+
+    if status_code == 200 or status_code == 201:  
+        return render_template("result2.html", result = result)
+    else: # Para probar esteescenario, en el if dejar solo el status_code == 200
+        return render_template("result.html", result = message)
+
 
     # # Check if the post request has the file part
     # if 'files[]' not in request.files and 'photo' not in request.files:
@@ -198,8 +213,7 @@ def upload_file(files):
         resp.status_code = 400
         resp.content_type = "application/json"
         # return resp
-        # return make_response(resp, resp.status_code)
-        return render_template("result.html", result = errors['message'])
+        return errors, "No file uploaded", 400
 
 
     # Obtiene del campo 'files[]' en el request hecho por el usuario los archivos que contenga
@@ -251,8 +265,7 @@ def upload_file(files):
         resp.status_code = 500
         resp.content_type = "application/json"
         # return resp
-        # return make_response(resp, resp.status_code)
-        return render_template("result.html", result = errors['message'])
+        return errors, errors['message'], 500
 
 
     if success:
@@ -267,25 +280,24 @@ def upload_file(files):
         # Si el texto extraído no está vacío...
         if ocr_text_result != '':
 
+            message = 'Files successfully uploaded'
             ocr_text_result = ocr_text_result.replace("\n\n", " ").replace("\u201c", '\"').replace("\u201d", '"').replace("\\", "")
 
             # if upload_success:
             # replace is only for making json esthetic, when returned, left the \n\n and else
             resp = jsonify({
-                'message' : 'Files successfully uploaded',
+                'message' : message,
                 'ocr_extracted_text': ocr_text_result
             })
 
-        # return resp
-        # return make_response(resp, ocr_text_result)
-        return render_template("result.html", result = ocr_text_result)
+        return message, ocr_text_result, 201
     else:
         resp = jsonify(errors) 
         resp.status_code = 500
         resp.content_type = "application/json"
         # return resp
-        # return make_response(resp, resp.status_code)
-        return render_template("result.html", result = errors['message'])
+        return errors, errors['message'], 500
+
 
 
 
