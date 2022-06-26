@@ -42,16 +42,16 @@ def allowed_file(filename):
 
 @app.route('/', methods=['GET'])
 def index():
-    return render_template("index.html")
+    return render_template("index.html", title="Index")
     # return render_template("index.html", name = name)
 
 @app.route('/index2', methods=['GET'])
 def index2():
-    return render_template("index2.html")
+    return render_template("index2.html", title="Index 2")
 
 @app.route('/index3', methods=['GET'])
 def index3():
-    return render_template("index3.html")
+    return render_template("index3.html", title="Index 3")
 
 @app.route('/base_html', methods=['GET'])
 def base_html(title=None):
