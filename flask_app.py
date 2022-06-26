@@ -302,8 +302,10 @@ def upload_file(files):
 
 
 if __name__ == '__main__':
-    app.config['SESSION_TYPE'] = 'filesystem'
+    # app.config['SESSION_TYPE'] = 'filesystem'
 
-    app.run(port = 7000) # ,debug = True
+    app.run() # ,debug = True
+    # # Only use in localhost
+    # app.run(port = 7000) # ,debug = True
 
     
