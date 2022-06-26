@@ -1,8 +1,8 @@
 {% extends 'base.html' %}
 
-{% block content %}
-    <h1>{% block title %} Add a New Message {% endblock %}</h1>
-    <form action="{{ url_for('upload_file') }}" enctype="multipart/form-data" method="post">
+{% block main %}
+    <!-- <h1>{% block title %} Add a New Message {% endblock %}</h1> -->
+    <form action="{{ url_for('upload_file_test') }}" enctype="multipart/form-data" method="post">
         <!-- <label for="title">Title</label> -->
         <label class="fileSelect" for="files[]">Upload Photo (JPG, PNG, JPEG, GIF)</label>
         <br>
@@ -15,7 +15,7 @@
         
         <br>
         <br>
-        
+
         <!-- <button type="submit">Submit</button> -->
         <input type="submit" value="Submit Picture">
 

@@ -49,6 +49,10 @@ def index():
 def index2():
     return render_template("index2.html")
 
+@app.route('/index3', methods=['GET'])
+def index3():
+    return render_template("index3.html")
+
 @app.route('/base_html', methods=['GET'])
 def base_html(title=None):
     return render_template("base.html", title = title)
@@ -63,10 +67,128 @@ def html_result2(result=None):
 
 # endregion
 
+# En Index, url_for('upload_file_test') apunta a este método
+# sin importar la ruta que tenga definida
+@app.route('/upload_test', methods=['POST'])
+def upload_file_test():
+    # Getting files uploaded in form enctype="multipart/form-data"
+    files = request.files['files[]']
+    
+    print('files:', files)
+
+    upload_file(files)
+
+    return
+    # return render_template("result.html", result = "Ok")
+
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
 
+    # Obtiene del campo 'files[]' en el request hecho por el usuario los archivos que contenga
+    files = request.files.getlist('files[]')
+    upload_file(files)
+
+    # # Check if the post request has the file part
+    # if 'files[]' not in request.files and 'photo' not in request.files:
+    #     # resp = jsonify({'message' : 'No file part in the request'})
+    #     # resp = jsonify({'message' : 'No file uploaded in the request :/, go back and upload some.'})
+    #     errors['message'] = 'No file uploaded in the request :/, go back and upload some.'
+    #     resp = jsonify(errors)
+    #     resp.status_code = 400
+    #     resp.content_type = "application/json"
+    #     # return resp
+    #     # return make_response(resp, resp.status_code)
+    #     return render_template("result.html", result = errors['message'])
+
+
+    # # Obtiene del campo 'files[]' en el request hecho por el usuario los archivos que contenga
+    # files = request.files.getlist('files[]')
+     
+    # errors = {}
+    # success = False
+
+    # for file in files:      
+    #     if file and allowed_file(file.filename):
+    #         print(file)
+    #         # pprint(vars(file))
+
+    #         filename = file.filename
+
+    #         # Get file extension
+    #         ext = '.' in filename and filename.rsplit('.', 1)[1].lower()
+
+    #         filename = secure_filename(file.filename)
+
+    #         # datetime object containing current date and time
+    #         now = datetime.now()
+
+    #         # date and time: dd/mm/YY H:M:S
+    #         dt_string = now.strftime("%d-%m-%Y %H-%M-%S")
+
+    #         # Para que sea un nombre único, se agrega
+    #         # la fecha y hora en la que se hizo la consulta
+    #         filename = filename + "_" + dt_string + "." + ext
+
+    #         photo_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    #         file.save(photo_path)
+
+    #         size = os.path.getsize(photo_path)
+    #         print("size:", size, "bytes")
+
+    #         success = True
+    #     else:
+    #         errors[file.filename] = 'File type is not allowed'
+ 
+    # if success and errors:
+    #     """ Así mostraría el mensaje
+    #         {
+    #             "message": "Files successfully uploaded, but some errors occurred."
+    #         }
+    #     """
+    #     errors['message'] = 'File(s) successfully uploaded, but some errors occurred.'
+    #     resp = jsonify(errors)
+    #     resp.status_code = 500
+    #     resp.content_type = "application/json"
+    #     # return resp
+    #     # return make_response(resp, resp.status_code)
+    #     return render_template("result.html", result = errors['message'])
+
+
+    # if success:
+    #     # Type (print(type(resp))): flask.wrappers.Response
+    #     resp = jsonify({'message' : 'Files successfully uploaded'})
+    #     # resp.status_code = 201
+    #     # resp.content_type = "application/json"
+
+    #     ocr_text_result = ocr_app_get_text(os.path.join(app.config['UPLOAD_FOLDER'], filename))
+
+
+    #     # Si el texto extraído no está vacío...
+    #     if ocr_text_result != '':
+
+    #         ocr_text_result = ocr_text_result.replace("\n\n", " ").replace("\u201c", '\"').replace("\u201d", '"').replace("\\", "")
+
+    #         # if upload_success:
+    #         # replace is only for making json esthetic, when returned, left the \n\n and else
+    #         resp = jsonify({
+    #             'message' : 'Files successfully uploaded',
+    #             'ocr_extracted_text': ocr_text_result
+    #         })
+
+    #     # return resp
+    #     # return make_response(resp, ocr_text_result)
+    #     return render_template("result.html", result = ocr_text_result)
+    # else:
+    #     resp = jsonify(errors) 
+    #     resp.status_code = 500
+    #     resp.content_type = "application/json"
+    #     # return resp
+    #     # return make_response(resp, resp.status_code)
+    #     return render_template("result.html", result = errors['message'])
+
+
+def upload_file(files):
     # Check if the post request has the file part
     if 'files[]' not in request.files and 'photo' not in request.files:
         # resp = jsonify({'message' : 'No file part in the request'})
@@ -164,7 +286,8 @@ def upload_file():
         # return resp
         # return make_response(resp, resp.status_code)
         return render_template("result.html", result = errors['message'])
-    
+
+
 
 if __name__ == '__main__':
     app.config['SESSION_TYPE'] = 'filesystem'
