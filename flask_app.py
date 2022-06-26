@@ -244,10 +244,26 @@ def upload_file(files):
             filename = filename + "_" + dt_string + "." + ext
 
             dir = app.config['UPLOAD_FOLDER']
-            print(os.path.exists(dir))
+            print("exists upload:", os.path.exists(dir))
+            cwd = os.getcwd()
+            print("Current folder:", cwd)
+            dir1 = os.path.dirname("static")
+            dir2 = os.path.dirname("/static")
+            dir3 = os.path.dirname("./static")
+            dir4 = os.path.dirname(r"static")
+            dir5 = os.path.dirname(r"/static")
+            dir6 = os.path.dirname(r"./static")
+
+            print('dir1:',dir1)
+            print('dir2:',dir2)
+            print('dir3:',dir3)
+            print('dir4:',dir4)
+            print('dir5:',dir5)
+            print('dir6:',dir6)
 
             photo_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-            file.save(r"" + photo_path)
+            file.save(photo_path)
+            # file.save(r"" + photo_path)
 
             size = os.path.getsize(photo_path)
             print("size:", size, "bytes")
