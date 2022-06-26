@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify, render_template
+from flask import Flask, request, jsonify, render_template, make_response
 import os
 from werkzeug.utils import secure_filename
 
@@ -50,7 +50,9 @@ def upload_file():
         # resp = jsonify({'message' : 'No file part in the request'})
         resp = jsonify({'message' : 'No file uploaded in the request :/, go back and upload some.'})
         resp.status_code = 400
-        return resp
+        # return resp
+        return make_response(resp, resp.status_code)
+
 
     # Obtiene del campo 'files[]' en el request hecho por el usuario los archivos que contenga
     files = request.files.getlist('files[]')
@@ -99,7 +101,8 @@ def upload_file():
         errors['message'] = 'File(s) successfully uploaded, but some errors occurred.'
         resp = jsonify(errors)
         resp.status_code = 500
-        return resp
+        # return resp
+        return make_response(resp, resp.status_code)
 
     if success:
         # Type (print(type(resp))): flask.wrappers.Response
@@ -122,13 +125,13 @@ def upload_file():
                     .replace("\\", "")
             })
 
-            return resp
-
-        return resp
+        # return resp
+        return make_response(resp, resp.status_code)
     else:
         resp = jsonify(errors) 
         resp.status_code = 500
-        return resp
+        # return resp
+        return make_response(resp, resp.status_code)
  
 
 if __name__ == '__main__':
