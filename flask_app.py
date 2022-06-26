@@ -43,15 +43,15 @@ def allowed_file(filename):
 @app.route('/')
 # @app.route('/', methods=['GET'])
 def index():
-    return render_template("index.html", title="Index")
+    return render_template("index3.html", title="Index")
     # return render_template("index.html", name = name)
 
 @app.route('/index2')
-def index2():
+def index_2():
     return render_template("index2.html", title="Index 2")
 
 @app.route('/index3')
-def index3():
+def index_3():
     return render_template("index3.html", title="Index 3")
 
 @app.route('/base_html')
@@ -75,19 +75,16 @@ def upload_file_test():
     # Getting files uploaded in form enctype="multipart/form-data"
     files = request.files['files[]']
     
-    print('files:', files)
-
     message, result, status_code = upload_file(files)
 
     # pprint(vars(result))
     # print('result.response["ocr_extracted_text"]:', result.response["ocr_extracted_text"])
     # print('result.response[0]:', result.response[0])
-    # print('result.response[0][1]:', result.response[0][0])
-    # print('result.response[0].decode("utf-8"):', result.response[0].decode("utf-8"))
-    # print(type(result.response[0]))
 
-
-    return render_template("result2.html", result = result)
+    if status_code == 200 or status_code == 201:  
+        return render_template("result2.html", result = result)
+    else: # Para probar esteescenario, en el if dejar solo el status_code == 200
+        return render_template("result.html", result = message)
 
 
 @app.route('/upload', methods=['POST'])
