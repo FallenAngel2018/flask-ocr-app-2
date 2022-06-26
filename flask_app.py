@@ -23,10 +23,8 @@ app = Flask(__name__,
 # app.secret_key = "caircocoders-ednalan"
 
 
-# UPLOAD_FOLDER = r'static/uploads/' # Original, funciona en Windows
-UPLOAD_FOLDER = r'./static/uploads/' # Tal vez funcione en Linux
-# OCR_RESULTS_UPLOAD = 'static/ocr_results/' # Funciona en Windows
-OCR_RESULTS_UPLOAD = r'./static/ocr_results/'
+UPLOAD_FOLDER = r'static/uploads/' # Original, funciona en Windows
+OCR_RESULTS_UPLOAD = r'./static/ocr_results/' # Funciona en Windows
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['OCR_RESULTS_UPLOAD'] = OCR_RESULTS_UPLOAD
@@ -44,7 +42,7 @@ def allowed_file(filename):
 @app.route('/')
 # @app.route('/', methods=['GET'])
 def index():
-    return render_template("index3.html", title="Index")
+    return render_template("index.html", title="Index")
     # return render_template("index.html", name = name)
 
 @app.route('/index2')
@@ -247,19 +245,6 @@ def upload_file(files):
             print("exists upload:", os.path.exists(dir))
             cwd = os.getcwd()
             print("Current folder:", cwd)
-            dir1 = os.path.dirname("static")
-            dir2 = os.path.dirname("/static")
-            dir3 = os.path.dirname("./static")
-            dir4 = os.path.dirname(r"static")
-            dir5 = os.path.dirname(r"/static")
-            dir6 = os.path.dirname(r"./static")
-
-            print('dir1:',dir1)
-            print('dir2:',dir2)
-            print('dir3:',dir3)
-            print('dir4:',dir4)
-            print('dir5:',dir5)
-            print('dir6:',dir6)
 
             photo_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
             file.save(photo_path)
