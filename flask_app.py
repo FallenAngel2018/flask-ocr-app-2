@@ -126,7 +126,7 @@ def upload_file():
 
         return resp
     else:
-        resp = jsonify(errors)
+        resp = jsonify(errors) 
         resp.status_code = 500
         return resp
  
