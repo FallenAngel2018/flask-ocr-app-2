@@ -38,15 +38,36 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 
+# region Html pages
+
 @app.route('/', methods=['GET'])
-def index(name=None):
-    return render_template("index.html", name = name)
+def index():
+    return render_template("index.html")
+    # return render_template("index.html", name = name)
+
+@app.route('/index2', methods=['GET'])
+def index2():
+    return render_template("index2.html")
+
+@app.route('/base_html', methods=['GET'])
+def base_html(title=None):
+    return render_template("base.html", title = title)
+
+@app.route('/result', methods=['GET'])
+def html_result(result=None):
+    return render_template("result.html", result = result)
+
+@app.route('/result2', methods=['GET'])
+def html_result2(result=None):
+    return render_template("result2.html", result = result)
+
+# endregion
 
 
 @app.route('/upload', methods=['POST'])
 def upload_file():
 
-    # check if the post request has the file part
+    # Check if the post request has the file part
     if 'files[]' not in request.files and 'photo' not in request.files:
         # resp = jsonify({'message' : 'No file part in the request'})
         # resp = jsonify({'message' : 'No file uploaded in the request :/, go back and upload some.'})
@@ -143,7 +164,7 @@ def upload_file():
         # return resp
         # return make_response(resp, resp.status_code)
         return render_template("result.html", result = errors['message'])
- 
+    
 
 if __name__ == '__main__':
     app.config['SESSION_TYPE'] = 'filesystem'
