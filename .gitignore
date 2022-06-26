@@ -10,11 +10,5 @@ static/ocr_results/*
 # exception to the rule
 !static/ocr_results/.gitkeep
 
-# exclude everything
-static/trained_fonts/*
-
-# exception to the rule
-!static/trained_fonts/.gitkeep
-
 # .env
 .env
