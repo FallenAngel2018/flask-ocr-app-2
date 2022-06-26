@@ -14,7 +14,8 @@ import os
 from ocr_app import ocr_app_get_text
 
 
-app = Flask(__name__)
+app = Flask(__name__,
+            template_folder='./templates',)
  
 # Fuente: https://stackoverflow.com/questions/51436382/runtimeerror-the-session-is-unavailable-because-no-secret-key-was-set-set-the
 # Esto arregla un error que sucede cuando se llama
