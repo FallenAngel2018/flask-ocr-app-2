@@ -243,7 +243,7 @@ def upload_file(files):
             filename = filename + "_" + dt_string + "." + ext
 
             photo_path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-            file.save(photo_path)
+            file.save(r"" + photo_path)
 
             size = os.path.getsize(photo_path)
             print("size:", size, "bytes")
