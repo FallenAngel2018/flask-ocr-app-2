@@ -19,17 +19,15 @@ app = Flask(__name__)
 # Fuente: https://stackoverflow.com/questions/51436382/runtimeerror-the-session-is-unavailable-because-no-secret-key-was-set-set-the
 # Esto arregla un error que sucede cuando se llama
 # al método mega_logout desde el método de la app3.py /upload.
-app.secret_key = "caircocoders-ednalan"
+# app.secret_key = "caircocoders-ednalan"
 
 
 UPLOAD_FOLDER = 'static/uploads/' # Original
 # OCR_RESULTS_UPLOAD = 'static/ocr_results/' # Funciona en Windows
 OCR_RESULTS_UPLOAD = r'./static/ocr_results/'
-TRAINED_FONTS_SOURCE = r"./static/trained_fonts/"
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['OCR_RESULTS_UPLOAD'] = OCR_RESULTS_UPLOAD
-app.config['TRAINED_FONTS_SOURCE'] = TRAINED_FONTS_SOURCE
 
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
  
