@@ -236,7 +236,7 @@ def upload_file(files):
             now = datetime.now()
 
             # date and time: dd/mm/YY H:M:S
-            dt_string = now.strftime("%d-%m-%Y %H-%M-%S")
+            dt_string = now.strftime("%d-%m-%Y_%H-%M-%S")
 
             # Para que sea un nombre único, se agrega
             # la fecha y hora en la que se hizo la consulta
