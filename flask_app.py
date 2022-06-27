@@ -7,6 +7,7 @@ from datetime import datetime
 from pprint import pprint
 import os
 
+from ocr_app import validate_user
 
 # from dotenv import load_dotenv
 # load_dotenv()
@@ -16,11 +17,6 @@ from ocr_app import ocr_app_get_text
 
 app = Flask(__name__,
             template_folder='./templates',)
- 
-# Fuente: https://stackoverflow.com/questions/51436382/runtimeerror-the-session-is-unavailable-because-no-secret-key-was-set-set-the
-# Esto arregla un error que sucede cuando se llama
-# al método mega_logout desde el método de la app3.py /upload.
-# app.secret_key = "caircocoders-ednalan"
 
 
 UPLOAD_FOLDER = r'static/uploads/' # Original, funciona en Windows
@@ -42,15 +38,18 @@ def allowed_file(filename):
 @app.route('/')
 # @app.route('/', methods=['GET'])
 def index():
+    validate_user()
     return render_template("index.html", title="Index")
     # return render_template("index.html", name = name)
 
 @app.route('/index2')
 def index_2():
+    validate_user()
     return render_template("index2.html", title="Index 2")
 
 @app.route('/index3')
 def index_3():
+    validate_user()
     return render_template("index3.html", title="Index 3")
 
 @app.route('/base_html')
@@ -66,6 +65,7 @@ def html_result2(result=None):
     return render_template("result2.html", result = result)
 
 # endregion
+
 
 # En Index, url_for('upload_file_test') apunta a este método
 # sin importar la ruta que tenga definida

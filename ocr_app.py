@@ -61,3 +61,22 @@ def remove_picture(file_path):
         print("The file does not exist!")
 
 
+import socket
+from datetime import datetime
+def validate_user():
+    print("From OCR Index")
+
+    hostname = socket.gethostname()    
+    IPAddr = socket.gethostbyname(hostname)    
+
+    # datetime object containing current date and time
+    now = datetime.now()
+
+    # date and time: dd/mm/YY H:M:S
+    dt_string = now.strftime("%d-%m-%Y %H:%M:%S")
+
+    print("Your Computer Name is:",hostname)    
+    print("Your Computer IP Address is:",IPAddr)
+    print("Page checked at",dt_string)
+    print()
+
