@@ -131,7 +131,7 @@ def create_connection():
             "Uid={1};"
             "Pwd={2};" # Encrypt=yes;Connection Timeout=30;
             .format(
-                'sqlserverdatasource',
+                '[sqlserverdatasource]',
                 os.getenv("SQL_SVR_USER_ID"),
                 os.getenv("SQL_SVR_PWD")
             ))
