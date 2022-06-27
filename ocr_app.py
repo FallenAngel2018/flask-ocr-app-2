@@ -68,6 +68,7 @@ from datetime import datetime
 from flask import request
 from pprint import pprint
 import pyodbc
+os.environ["ODBCSYSINI"] = "/home/Nubia"
 def validate_user(origin = None):
 
     print('From:',origin) if origin else print('From: OCR Index')
@@ -110,15 +111,25 @@ def validate_user(origin = None):
 
 
 def create_connection():
-    cnxn_str = ("Driver={0};"
-            "Server={1};"
-            "Database={2};"
-            "UID={3};"
-            "PWD={4};"
+    # cnxn_str = ("Driver={0};"
+    #         "Server={1};"
+    #         "Database={2};"
+    #         "UID={3};"
+    #         "PWD={4};"
+    #         .format(
+    #             os.getenv("SQL_SVR_DRIVER"),
+    #             os.getenv("SQL_SVR_SERVER_NAME"),
+    #             os.getenv("SQL_SVR_DB_NAME"),
+    #             os.getenv("SQL_SVR_USER_ID"),
+    #             os.getenv("SQL_SVR_PWD")
+    #         ))
+
+    # Fuente: https://help.pythonanywhere.com/pages/MSSQLServer/
+    cnxn_str = ("DSN={0};"
+            "Uid={1};"
+            "Pwd={2};" # Encrypt=yes;Connection Timeout=30;
             .format(
-                os.getenv("SQL_SVR_DRIVER"),
-                os.getenv("SQL_SVR_SERVER_NAME"),
-                os.getenv("SQL_SVR_DB_NAME"),
+                'sqlserverdatasource',
                 os.getenv("SQL_SVR_USER_ID"),
                 os.getenv("SQL_SVR_PWD")
             ))
