@@ -82,6 +82,7 @@ def check_some_folders_existance(show):
                 # shutil.copy(source, destination)
                 print(file_name,'copied!')
 
+
                 # Aquí falta código de descarga de .traineddata de nube en Mega
 
                 # Y una vez obtenidos y listados los archivos

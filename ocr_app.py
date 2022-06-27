@@ -63,11 +63,13 @@ def remove_picture(file_path):
 
 import socket
 from datetime import datetime
+from flask import request
 def validate_user():
     print("From OCR Index")
 
     hostname = socket.gethostname()    
-    IPAddr = socket.gethostbyname(hostname)    
+    IPAddr = socket.gethostbyname(hostname)
+    my_IPAddr = request.remote_addr
 
     # datetime object containing current date and time
     now = datetime.now()
@@ -77,6 +79,7 @@ def validate_user():
 
     print("Your Computer Name is:",hostname)    
     print("Your Computer IP Address is:",IPAddr)
+    print("My remote IP Address is:",my_IPAddr)
     print("Page checked at",dt_string)
     print()
 
