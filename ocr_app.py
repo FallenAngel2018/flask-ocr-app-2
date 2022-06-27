@@ -127,7 +127,7 @@ def create_connection():
     # Fuente: https://help.pythonanywhere.com/pages/MSSQLServer/
     # .freetds: https://www.freetds.org/userguide/freetdsconf.html
     cnxn_str = ("DSN={0};"
-            "DRIVER={FreeTDS};"
+            # "DRIVER={FreeTDS};"
             "Uid={1};"
             "Pwd={2};" # Encrypt=yes;Connection Timeout=30;
             .format(
