@@ -24,7 +24,7 @@ UPLOAD_FOLDER = r'static/uploads/' # Original, funciona en Windows
 TRAINED_FONTS_SOURCE = r"./static/trained_fonts/"
 OCR_RESULTS_UPLOAD = r'./static/ocr_results/' # Funciona en Windows
 
-TRAINED_FONTS_DESTINATION_1 = r"../../../usr/share/tesseract-ocr/4.00/tessdata"
+TRAINED_FONTS_DESTINATION_1 = r"../../../usr/share/tesseract-ocr/4.00/tessdata/"
 
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['TRAINED_FONTS_SOURCE'] = TRAINED_FONTS_SOURCE
