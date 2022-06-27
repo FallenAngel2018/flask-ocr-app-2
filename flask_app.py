@@ -13,17 +13,24 @@ from ocr_app import validate_user
 # load_dotenv()
 
 from ocr_app import ocr_app_get_text
-
+# To copy files
+import shutil
 
 app = Flask(__name__,
             template_folder='./templates',)
 
 
 UPLOAD_FOLDER = r'static/uploads/' # Original, funciona en Windows
+TRAINED_FONTS_SOURCE = r"./static/trained_fonts/"
 OCR_RESULTS_UPLOAD = r'./static/ocr_results/' # Funciona en Windows
 
+TRAINED_FONTS_DESTINATION_1 = r"../../../usr/share/tesseract-ocr/4.00/tessdata"
+
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['TRAINED_FONTS_SOURCE'] = TRAINED_FONTS_SOURCE
 app.config['OCR_RESULTS_UPLOAD'] = OCR_RESULTS_UPLOAD
+
+app.config['TRAINED_FONTS_DESTINATION_1'] = TRAINED_FONTS_DESTINATION_1
 
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
  
@@ -31,6 +38,62 @@ ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
  
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
+
+
+
+# region Before First Request Methods (Only use True to log on Heroku server)
+
+source_folder = app.config['TRAINED_FONTS_SOURCE']
+destination_folder = app.config['TRAINED_FONTS_DESTINATION_1']
+
+def check_some_folders_existance(show):
+    if show:
+        source_folder_exists = os.path.isdir(source_folder)
+        exists = os.path.isdir(destination_folder)
+
+        print('source_folder_exists:', source_folder_exists)
+        print('exists:', exists)
+
+        if exists != False and (exists != None or exists != ''):
+            print('Dir. exists!')
+        else:
+            print('Dir. not exists')
+
+        print("before_first_request")
+
+
+        # Fetch all files
+        for file_name in os.listdir(source_folder):
+            # construct full file path
+            source = source_folder + file_name
+            destination = destination_folder + file_name
+
+            # copy only files
+            # El propósito de esta sección, es agregar en el servidor de Heroku
+            # los .traineddata para que el server lea mejor las imágenes.
+            # Esto se debe lograr como sea, ya sea por copia y pega de archivos,
+            # o por la descarga de esos archivos desde una nube externa y agregadas
+            # a las carpetas de destination 1 y 2.
+            if os.path.isfile(source):
+                print('destination:', destination)
+                print('source:', source)
+                # Descomentar cuando se suba a Heroku, esto copia los archivos
+                # No se copiaron, habrá que hacer más pruebas
+                # shutil.copy(source, destination)
+                print(file_name,'copied!')
+
+                # Aquí falta código de descarga de .traineddata de nube en Mega
+
+                # Y una vez obtenidos y listados los archivos
+                # en un arreglo llamado files...
+                # for f in files:
+                #     shutil.move(f, 'destination')
+                #     shutil.move(f, 'destination2')
+
+# endregion
+
+check_some_folders_existance(True)
+
 
 
 # region Html pages
