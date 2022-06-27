@@ -71,7 +71,7 @@ import pyodbc
 def validate_user(origin = None):
 
     print('From:',origin) if origin else print('From: OCR Index')
-
+    print("pyodbc.drivers():", pyodbc.drivers())
     try:
 
         hostname = socket.gethostname()    
