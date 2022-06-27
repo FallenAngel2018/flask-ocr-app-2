@@ -68,7 +68,7 @@ from datetime import datetime
 from flask import request
 from pprint import pprint
 import pyodbc
-os.environ["ODBCSYSINI"] = "/home/Nubia"
+os.environ["ODBCSYSINI"] = "./home/Nubia/flask-ocr-app-2/"
 def validate_user(origin = None):
 
     print('From:',origin) if origin else print('From: OCR Index')
