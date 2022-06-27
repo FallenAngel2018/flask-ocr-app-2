@@ -50,9 +50,9 @@ def check_some_folders_existance(show):
     if show:
         source_folder_exists = os.path.isdir(source_folder)
         exists = os.path.isdir(destination_folder)
-
+        
         print('source_folder_exists:', source_folder_exists)
-        print('exists:', exists)
+        print('destination exists:', exists)
 
         if exists != False and (exists != None or exists != ''):
             print('Dir. exists!')
@@ -75,11 +75,12 @@ def check_some_folders_existance(show):
             # o por la descarga de esos archivos desde una nube externa y agregadas
             # a las carpetas de destination 1 y 2.
             if os.path.isfile(source):
-                print('destination:', destination)
-                print('source:', source)
+                # print('destination:', destination)
+                # print('source:', source)
+
                 # Descomentar cuando se suba a Heroku, esto copia los archivos
                 # No se copiaron, habrá que hacer más pruebas
-                # shutil.copy(source, destination)
+                shutil.copy(source, destination)
                 print(file_name,'copied!')
 
 
@@ -93,7 +94,7 @@ def check_some_folders_existance(show):
 
 # endregion
 
-check_some_folders_existance(True)
+check_some_folders_existance(False)
 
 
 
@@ -104,16 +105,15 @@ check_some_folders_existance(True)
 def index():
     validate_user()
     return render_template("index.html", title="Index")
-    # return render_template("index.html", name = name)
 
 @app.route('/index2')
 def index_2():
-    validate_user()
+    validate_user(origin = "Index 2")
     return render_template("index2.html", title="Index 2")
 
 @app.route('/index3')
 def index_3():
-    validate_user()
+    validate_user(origin = "Index 3")
     return render_template("index3.html", title="Index 3")
 
 @app.route('/base_html')

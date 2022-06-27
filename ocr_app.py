@@ -61,25 +61,73 @@ def remove_picture(file_path):
         print("The file does not exist!")
 
 
+# region More OCR tests
+
 import socket
 from datetime import datetime
 from flask import request
-def validate_user():
-    print("From OCR Index")
+from pprint import pprint
+import pyodbc
+def validate_user(origin = None):
 
-    hostname = socket.gethostname()    
-    IPAddr = socket.gethostbyname(hostname)
-    my_IPAddr = request.remote_addr
+    print('From:',origin) if origin else print('From: OCR Index')
 
-    # datetime object containing current date and time
-    now = datetime.now()
+    try:
 
-    # date and time: dd/mm/YY H:M:S
-    dt_string = now.strftime("%d-%m-%Y %H:%M:%S")
+        hostname = socket.gethostname()    
+        IPAddr = socket.gethostbyname(hostname)
+        my_IPAddr = request.remote_addr
+        # ip_addr_env = request.environ['HTTP_X_FORWARDED_FOR'] # For proxy requests
 
-    print("Your Computer Name is:",hostname)    
-    print("Your Computer IP Address is:",IPAddr)
-    print("My remote IP Address is:",my_IPAddr)
-    print("Page checked at",dt_string)
-    print()
+        # datetime object containing current date and time
+        now = datetime.now()
 
+        # date and time: dd/mm/YY H:M:S
+        dt_string = now.strftime("%d-%m-%Y %H:%M:%S")
+
+        print("Your Computer Name is:",hostname)    
+        print("Your Computer IP Address is:",IPAddr)
+        print("My remote IP Address is:",my_IPAddr)
+        print("Page checked at",dt_string)
+
+        sql = 'EXEC nb_set_checked_time ?, ?, ?, ?, ?'
+        values = (hostname, IPAddr, my_IPAddr, '', dt_string)
+
+        cursor = create_connection()
+
+        cursor.execute(sql, (values)) # (values)
+        for row in cursor.fetchall():
+            print(row)
+        
+        cursor.commit() # Aunque ya haya trans en el proc, esto termina de guardar datos
+
+        print()
+        # pprint(vars(request))
+
+    except Exception as e:
+        print("Error:", e)
+        pass
+
+
+def create_connection():
+    cnxn_str = ("Driver={0};"
+            "Server={1};"
+            "Database={2};"
+            "UID={3};"
+            "PWD={4};"
+            .format(
+                os.getenv("SQL_SVR_DRIVER"),
+                os.getenv("SQL_SVR_SERVER_NAME"),
+                os.getenv("SQL_SVR_DB_NAME"),
+                os.getenv("SQL_SVR_USER_ID"),
+                os.getenv("SQL_SVR_PWD")
+            ))
+
+    # Connection to SQL Server
+    cnxn = pyodbc.connect(cnxn_str)
+
+    cursor = cnxn.cursor()
+
+    return cursor 
+
+# endregion
