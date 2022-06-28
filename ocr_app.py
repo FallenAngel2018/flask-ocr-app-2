@@ -82,7 +82,7 @@ def validate_user(origin = None):
         IPAddr = socket.gethostbyname(hostname)
         my_IPAddr = request.remote_addr
         # ip_addr_env = request.environ['HTTP_X_FORWARDED_FOR'] # For proxy requests
-        ip = get('https://api.ipify.org').content.decode('utf8')
+        public_ip = get('https://api.ipify.org').content.decode('utf8')
 
         # datetime object containing current date and time
         now = datetime.now()
@@ -92,7 +92,7 @@ def validate_user(origin = None):
 
         print("Your Computer Name is:",hostname)    
         print("Your Computer IP Address is:",IPAddr)
-        print(f'My public IP address is: {ip}')
+        print(f'My public IP address is: {public_ip}')
         print("My remote IP Address is:",my_IPAddr)
         print("Page checked at",dt_string)
 
@@ -104,6 +104,7 @@ def validate_user(origin = None):
             "hostname": hostname,
             "ip_addr": IPAddr,
             "remote_ip_addr": my_IPAddr,
+            "public_ip_addr": public_ip,
             "proxy_ip_addr": 'proxy_addr',
             "checked_time": dt_string,
         }
