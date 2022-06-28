@@ -65,9 +65,12 @@ def remove_picture(file_path):
 
 import socket
 from datetime import datetime
-from flask import request
+from flask import request, jsonify
 from pprint import pprint
 import pyodbc
+import requests
+from requests import get
+
 os.environ["ODBCSYSINI"] = r"./home/Nubia/flask-ocr-app-2/"
 def validate_user(origin = None):
 
@@ -79,6 +82,7 @@ def validate_user(origin = None):
         IPAddr = socket.gethostbyname(hostname)
         my_IPAddr = request.remote_addr
         # ip_addr_env = request.environ['HTTP_X_FORWARDED_FOR'] # For proxy requests
+        ip = get('https://api.ipify.org').content.decode('utf8')
 
         # datetime object containing current date and time
         now = datetime.now()
@@ -88,19 +92,47 @@ def validate_user(origin = None):
 
         print("Your Computer Name is:",hostname)    
         print("Your Computer IP Address is:",IPAddr)
+        print(f'My public IP address is: {ip}')
         print("My remote IP Address is:",my_IPAddr)
         print("Page checked at",dt_string)
 
-        sql = 'EXEC nb_set_checked_time ?, ?, ?, ?, ?'
-        values = (hostname, IPAddr, my_IPAddr, '', dt_string)
 
-        cursor = create_connection()
+        url = 'http://localhost:3000/empleado/validate_user' # Localhost
+        url = 'https://node-pm-proy.herokuapp.com/empleado/validate_user' # Heroku
 
-        cursor.execute(sql, (values)) # (values)
-        for row in cursor.fetchall():
-            print(row)
+        data = {
+            "hostname": hostname,
+            "ip_addr": IPAddr,
+            "remote_ip_addr": my_IPAddr,
+            "proxy_ip_addr": 'proxy_addr',
+            "checked_time": dt_string,
+        }
+        # Los datos se vuelven undefined con este header
+        headers = {'Content-type': 'text/html; charset=UTF-8'} 
+        print(data)
+        response = requests.post(url, json=data)
+        # response = requests.post(url, data=data, verify=False, headers=headers)
+
+        print("response:", response)
+
+        # wait for the response. it should not be higher 
+        # than keep alive time for TCP connection
+
+        # render template or redirect to some url:
+        # return redirect("some_url")
+        # return render_template("some_page.html", message=str(response.text)) # or response.json()
+
+
+        # sql = 'EXEC nb_set_checked_time ?, ?, ?, ?, ?'
+        # values = (hostname, IPAddr, my_IPAddr, '', dt_string)
+
+        # cursor = create_connection()
+
+        # cursor.execute(sql, (values)) # (values)
+        # for row in cursor.fetchall():
+        #     print(row)
         
-        cursor.commit() # Aunque ya haya trans en el proc, esto termina de guardar datos
+        # cursor.commit() # Aunque ya haya trans en el proc, esto termina de guardar datos
 
         print()
         # pprint(vars(request))
@@ -110,20 +142,8 @@ def validate_user(origin = None):
         pass
 
 
-def create_connection():
-    # cnxn_str = ("Driver={0};"
-    #         "Server={1};"
-    #         "Database={2};"
-    #         "UID={3};"
-    #         "PWD={4};"
-    #         .format(
-    #             os.getenv("SQL_SVR_DRIVER"),
-    #             os.getenv("SQL_SVR_SERVER_NAME"),
-    #             os.getenv("SQL_SVR_DB_NAME"),
-    #             os.getenv("SQL_SVR_USER_ID"),
-    #             os.getenv("SQL_SVR_PWD")
-    #         ))
 
+def create_connection():
     # Fuente: https://help.pythonanywhere.com/pages/MSSQLServer/
     # .freetds: https://www.freetds.org/userguide/freetdsconf.html
     cnxn_str = ("DSN={0};"
