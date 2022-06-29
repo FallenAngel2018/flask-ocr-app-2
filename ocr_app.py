@@ -61,11 +61,11 @@ def remove_picture(file_path):
         print("The file does not exist!")
 
 
-# region More OCR tests
+# region More request tests
 
 import socket
 from datetime import datetime
-from flask import request, jsonify
+from flask import request
 from pprint import pprint
 import pyodbc
 import requests
@@ -83,6 +83,7 @@ def validate_user(origin = None):
         my_IPAddr = request.remote_addr
         # ip_addr_env = request.environ['HTTP_X_FORWARDED_FOR'] # For proxy requests
         public_ip = get('https://api.ipify.org').content.decode('utf8')
+        
 
         # datetime object containing current date and time
         now = datetime.now()
@@ -91,7 +92,7 @@ def validate_user(origin = None):
         dt_string = now.strftime("%d-%m-%Y %H:%M:%S")
 
         print("Your Computer Name is:",hostname)    
-        print("Your Computer IP Address is:",IPAddr)
+        print("Your Computer IP Address is:",IPAddr) # usr_pc_addr
         print(f'My public IP address is: {public_ip}')
         print("My remote IP Address is:",my_IPAddr)
         print("Page checked at",dt_string)
@@ -111,6 +112,9 @@ def validate_user(origin = None):
         # Los datos se vuelven undefined con este header
         headers = {'Content-type': 'text/html; charset=UTF-8'} 
         print(data)
+        # For $5 in PythonEverywhere (PE) allows to make requests to any server
+        # By now, forbids any attempt to request to heroku server
+        # or any that's not whitelisted in PE
         response = requests.post(url, json=data)
         # response = requests.post(url, data=data, verify=False, headers=headers)
 
